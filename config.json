@@ -8,7 +8,7 @@
     "boot": "auto",
     "ports": {
       "3000/tcp": 3000,
-      "22/tcp": 2222
+      "2222/tcp": 22
     },
     "webui": "http://[HOST]:[PORT:3000]",
     "map": [

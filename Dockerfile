@@ -3,25 +3,30 @@
 # Base image for the add-on
 FROM codeberg.org/forgejo/forgejo:8
 
-# Set environment variables for Forgejo
+# Set environment variables
 ENV USER=forgejo
 ENV UID=1000
 ENV GID=1000
 ENV FORGEJO_HOME=/var/lib/forgejo
-ENV GITEA_WORK_DIR=/var/lib/forgejo
 
-# Create necessary directories for Forgejo
-RUN mkdir -p /var/lib/forgejo /etc/forgejo /var/log/forgejo
+# Create the user and group
+RUN addgroup -g ${GID} forgejo && adduser -u ${UID} -G forgejo -h ${FORGEJO_HOME} -D forgejo
 
-# Set permissions for the Forgejo directories
-RUN chown -R ${UID}:${GID} /var/lib/forgejo /etc/forgejo /var/log/forgejo
+# Create directories and set permissions
+RUN mkdir -p /var/lib/forgejo /etc/forgejo /var/log/forgejo \
+  && chown -R forgejo:forgejo /var/lib/forgejo /etc/forgejo /var/log/forgejo
 
-# Expose the HTTP and SSH ports
+# Switch to the newly created user
+USER forgejo
+
+# Expose the necessary ports
 EXPOSE 3000 22
 
-# Copy the run script to the container
+# Copy your run script (if needed) and set the correct permissions
 COPY run.sh /usr/local/bin/run.sh
 RUN chmod +x /usr/local/bin/run.sh
 
-# Define the entrypoint
+RUN setcap 'cap_net_bind_service=+ep' /usr/local/bin/gitea
+
+# Set the entrypoint
 ENTRYPOINT ["/usr/local/bin/run.sh"]
