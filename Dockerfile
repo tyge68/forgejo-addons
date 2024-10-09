@@ -1,7 +1,7 @@
 # Dockerfile
 
 # Base image for the add-on
-FROM forgejo/forgejo:latest
+FROM codeberg.org/forgejo/forgejo
 
 # Set environment variables for Forgejo
 ENV USER=forgejo
