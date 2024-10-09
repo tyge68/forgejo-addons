@@ -9,8 +9,9 @@ ENV UID=1000
 ENV GID=1000
 ENV FORGEJO_HOME=/var/lib/forgejo
 
-# Create the user and group
-RUN addgroup -g ${GID} forgejo && adduser -u ${UID} -G forgejo -h ${FORGEJO_HOME} -D forgejo
+# Check if the group exists, if not, create it
+RUN getent group ${GID} || addgroup -g ${GID} forgejo \
+  && getent passwd ${UID} || adduser -u ${UID} -G forgejo -h ${FORGEJO_HOME} -D forgejo
 
 # Create directories and set permissions
 RUN mkdir -p /var/lib/forgejo /etc/forgejo /var/log/forgejo \
