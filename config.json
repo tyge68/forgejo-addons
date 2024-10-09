@@ -1,0 +1,27 @@
+{
+    "name": "Forgejo Git Server",
+    "version": "1.0",
+    "slug": "forgejo",
+    "description": "A lightweight, self-hosted Git server.",
+    "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
+    "startup": "services",
+    "boot": "auto",
+    "ports": {
+      "3000/tcp": 3000,
+      "22/tcp": 2222
+    },
+    "webui": "http://[HOST]:[PORT:3000]",
+    "map": [
+      "config:rw",
+      "ssl"
+    ],
+    "options": {
+      "PUID": 1000,
+      "PGID": 1000
+    },
+    "schema": {
+      "PUID": "int",
+      "PGID": "int"
+    }
+  }
+  
